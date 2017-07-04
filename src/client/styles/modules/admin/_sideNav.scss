@@ -1,0 +1,46 @@
+.side-nav {
+	width: 13%;
+	height: 100vh;
+	background-color: $NavBgColor;
+
+
+	.main-list {
+		display: block;
+		&:hover {
+			background-color: #202c38;
+		}
+		&:hover a {
+			color: #FFF;
+		}
+	}
+
+	a {
+		display: block;
+		color: $NavColor;
+		font-weight: 500;
+	}
+	.main-links {
+		padding: 15px;
+		font-size: 1.5rem;
+		&:hover,
+		&:focus {
+			background-color: #202c38;
+		}
+		&:hover a,
+		&:focus a {
+			color: #FFF;
+		}
+	}
+
+	i {
+		margin-right: 10px;
+	}
+
+	.sub-list {
+		margin-left: 40px;
+		a {
+			padding: 5px;
+			font-size: 13px;
+		}
+	}
+}

@@ -1,7 +1,9 @@
 // $fa-font-path: "~font-awesome/fonts";
 // @import "~font-awesome/scss/font-awesome";
-@import "./modules/variables";
 
-body {
-	background: tomato;
-}
+@import "./base/variables";
+@import "./base/global";
+@import "./base/mixins";
+
+// Admin
+@import "./modules/admin/sideNav";
