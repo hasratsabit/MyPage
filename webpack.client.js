@@ -1,27 +1,47 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const dirname = path.resolve("./");
 
-const vendoModules = [
-			"jQuery"
-]
 
-function createClientConfig(isDebug) {
-	const devTool = isDebug ? "eval-source-map" : "source-map";
-	const cssLoader = { test: /\.css$/, loader: ["style-loader", "css-loader"]};
-	const sassLoader = { test: /\.scss$/, loader: ["style-loader", "css-loader", "sass-loader"]}
+function createClientConfig(isDev) {
+
+	const sassDev = ['style-loader', 'css-loader', 'sass-loader'];
+	const sassProd = ExtractTextPlugin.extract({
+		fallback: 'style-loader',
+		use: ['css-loader', 'sass-loader']
+	});
+
+	const cssDev = ['style-loader', 'css-loader', 'sass-loader'];
+	const cssProd = ExtractTextPlugin.extract({
+		fallback: 'style-loader',
+		use: ['css-loader']
+	});
+
+	const cssLoader = isDev ? cssDev : cssProd;
+	const sassLoader = isDev ? sassDev : sassProd;
+
+	const devTool = isDev ? "eval-source-map" : "source-map";
 	const appEntry = ["./src/client/scripts/main.js"];
-	const plugins = [];
-
-	if(!isDebug) {
-		plugins.push(new webpack.optimize.UglifyJsPlugin());
-		plugins.push(new ExtractTextPlugin("styles.css"));
-
-		cssLoader.loader = ExtractTextPlugin.extract({ fallback: "style-loader", use: "css-loader"});
-		sassLoader.loader = ExtractTextPlugin.extract({ fallback: "style-loader", use: ["css-loader", "sass-loader"]});
-	}else {
-		plugins.push(new webpack.HotModuleReplacementPlugin());
+	const plugins = isDev
+				? [
+						new webpack.optimize.CommonsChunkPlugin("vendors"),
+						new webpack.HotModuleReplacementPlugin()
+					]
+				: [
+						new webpack.optimize.UglifyJsPlugin(),
+						new ExtractTextPlugin({filename: "styles.css"}),
+						new OptimizeCssAssetsPlugin({
+							assetNameRegExp: /.css$/,
+							cssProcessor: require("cssnano"),
+							cssProcessorOptions: { discardComments: {removeAll: true}},
+							canPrint: true
+						})
+					]
+	if(isDev){
 		appEntry.splice(0, 0, "webpack-hot-middleware/client");
 	}
 
@@ -29,19 +49,43 @@ function createClientConfig(isDebug) {
 		devtool: devTool,
 		plugins: plugins,
 		entry: {
-			main: appEntry
+			bundle: appEntry,
+			vendors: [
+				'jquery'
+			]
 		},
 		output: {
-			path: path.join(dirname, "public", "build"),
-			publicPath: "/build/",
-			filename: "bundle.js"
+			path: path.join(dirname, "public", "assets"),
+			publicPath: "/assets/",
+			filename: "[name].js"
+		},
+		resolve: {
+			alias: {
+				shared: path.join(dirname, "src", "shared")
+			}
 		},
 		module: {
 			loaders: [
-				{ test: /\.js$/, loader: "babel-loader", exclude: /node_modules/ },
-				{ test: /\.(png|jpg|jpeg|gif|woff|ttf|eot|svg|woff2)/, loader: "url-loader?limit=1024" },
-				cssLoader,
-				sassLoader
+				{
+					test: /\.js$/,
+					use: "babel-loader",
+					exclude: /node_modules/
+				},
+				{
+					test: /\.(png|jpg|jpeg|gif|woff|ttf|eot|svg|woff2)/,
+					loader: "file-loader?name=[name].[ext]&outputPath=images/",
+					exclude: /node_modules/
+				},
+				{
+					test: /\.css$/,
+					use: cssLoader,
+					exclude: /node_modules/
+				},
+				{
+					test: /\.scss$/,
+					use: sassLoader,
+					exclude: /node_modules/
+				},
 			]
 		}
 	}
