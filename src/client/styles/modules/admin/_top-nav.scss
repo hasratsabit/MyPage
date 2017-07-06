@@ -1,0 +1,18 @@
+.top-nav {
+	position: fixed;
+	right: 0;
+	z-index: 10;
+	height: 50px;
+	width: 87%;
+	background: $NavBgColor;
+
+
+	ul {
+		a {
+			display: inline-block;
+			padding: 15px;
+			color: $NavColor;
+			border-right: 1px solid rgba($NavColor, 0.5);
+		}
+	}
+}

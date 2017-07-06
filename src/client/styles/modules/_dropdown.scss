@@ -1,0 +1,18 @@
+
+.drop-item {
+	display: none;
+	transition: all 200ms linear;
+	&--is-open {
+		display: block;
+		transition: all 200ms linear;
+	}
+}
+
+
+.arrow-down {
+	transition: all 200ms linear;
+	&--is-rotated {
+		transition: all 200ms linear;
+		transform: rotate(180deg);
+	}
+}

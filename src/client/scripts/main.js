@@ -1,1 +1,2 @@
-require("../styles/styles.scss");
+import "../styles/styles.scss";
+import "./modules/dropdown";
