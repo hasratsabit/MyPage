@@ -3,6 +3,7 @@
 	height: 500px;
 	padding: 70px 20px;
 	float: right;
+	background: #FFF;
 	transition: all 200ms linear;
 	@include atSmall {
 		width: 80%;

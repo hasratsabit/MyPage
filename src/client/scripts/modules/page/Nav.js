@@ -19,6 +19,8 @@ const PageMenuIcon = (function() {
 			$(MainContent).toggleClass('main--is-expanded');
 			// 4. Open Small Nav When SideNav is Closed
 			$(SmallNav).toggleClass('nav__sm-nav--is-open');
+			// 5. Toggle Menu Icon in Smaller Device
+			$(PageIcon).toggleClass('menu-icon--close-x ')
 		});
 
 }());
