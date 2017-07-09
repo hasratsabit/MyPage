@@ -5,6 +5,7 @@
 
 body {
 	background-color: $BgColor;
+	box-sizing: border-box;
 }
 
 a {
@@ -17,4 +18,9 @@ a {
 
 li {
 	list-style: none;
+}
+
+img {
+	box-sizing: border-box;
+	height: auto;
 }

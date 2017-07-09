@@ -44,7 +44,6 @@
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
     "util": "^0.10.3",
-    "webpack": "^2.4.1",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-node-externals": "^1.5.4"

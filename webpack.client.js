@@ -5,6 +5,7 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const dirname = path.resolve("./");
+const HtmlPlugin = require("html-webpack-plugin");
 
 
 function createClientConfig(isDev) {
@@ -24,12 +25,14 @@ function createClientConfig(isDev) {
 	const cssLoader = isDev ? cssDev : cssProd;
 	const sassLoader = isDev ? sassDev : sassProd;
 
-	const devTool = isDev ? "eval-source-map" : "source-map";
 	const appEntry = ["./src/client/scripts/main.js"];
 	const plugins = isDev
 				? [
 						new webpack.optimize.CommonsChunkPlugin("vendors"),
-						new webpack.HotModuleReplacementPlugin()
+						new webpack.HotModuleReplacementPlugin(),
+						new HtmlPlugin({
+							template: 'views/index.hbs'
+						})
 					]
 				: [
 						new webpack.optimize.UglifyJsPlugin(),
@@ -46,7 +49,7 @@ function createClientConfig(isDev) {
 	}
 
 	return {
-		devtool: devTool,
+		devtool: "source-map",
 		plugins: plugins,
 		entry: {
 			bundle: appEntry,
@@ -63,6 +66,12 @@ function createClientConfig(isDev) {
 			alias: {
 				shared: path.join(dirname, "src", "shared")
 			}
+		},
+		node: {
+			dns: "mock",
+			fs: "empty",
+			path: true,
+			url: false
 		},
 		module: {
 			loaders: [

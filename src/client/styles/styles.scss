@@ -5,11 +5,13 @@
 @import "./base/global";
 @import "./base/mixins";
 
-// Admin
-@import "./modules/admin/sideNav";
-@import "./modules/admin/top-nav";
-@import "./modules/admin/post-form";
 
-@import "./modules/dropdown";
+
 @import "./modules/input";
 @import "./modules/headlines";
+
+// Page
+@import "./modules/Nav";
+@import "./modules/Main";
+@import "./modules/MenuIcon";
+@import "./modules/Navbar";

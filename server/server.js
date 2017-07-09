@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -91,156 +88,6 @@ module.exports = require("webpack");
 "use strict";
 
 
-var express = __webpack_require__(0);
-var router = express.Router();
-
-router.get("/", function (req, res, next) {
-	res.render("index", { title: "Hasrat Sabit" });
-});
-
-module.exports = router;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var path = __webpack_require__(1);
-var webpack = __webpack_require__(2);
-var ExtractTextPlugin = __webpack_require__(16);
-var OptimizeCssAssetsPlugin = __webpack_require__(18);
-var ImageminPlugin = __webpack_require__(17).default;
-var CopyWebpackPlugin = __webpack_require__(14);
-var dirname = path.resolve("./");
-
-function createClientConfig(isDev) {
-
-	var sassDev = ['style-loader', 'css-loader', 'sass-loader'];
-	var sassProd = ExtractTextPlugin.extract({
-		fallback: 'style-loader',
-		use: ['css-loader', 'sass-loader']
-	});
-
-	var cssDev = ['style-loader', 'css-loader', 'sass-loader'];
-	var cssProd = ExtractTextPlugin.extract({
-		fallback: 'style-loader',
-		use: ['css-loader']
-	});
-
-	var cssLoader = isDev ? cssDev : cssProd;
-	var sassLoader = isDev ? sassDev : sassProd;
-
-	var devTool = isDev ? "eval-source-map" : "source-map";
-	var appEntry = ["./src/client/scripts/main.js"];
-	var plugins = isDev ? [new webpack.optimize.CommonsChunkPlugin("vendors"), new webpack.HotModuleReplacementPlugin()] : [new webpack.optimize.UglifyJsPlugin(), new ExtractTextPlugin({ filename: "styles.css" }), new OptimizeCssAssetsPlugin({
-		assetNameRegExp: /.css$/,
-		cssProcessor: __webpack_require__(15),
-		cssProcessorOptions: { discardComments: { removeAll: true } },
-		canPrint: true
-	})];
-	if (isDev) {
-		appEntry.splice(0, 0, "webpack-hot-middleware/client");
-	}
-
-	return {
-		devtool: devTool,
-		plugins: plugins,
-		entry: {
-			bundle: appEntry,
-			vendors: ['jquery']
-		},
-		output: {
-			path: path.join(dirname, "public", "assets"),
-			publicPath: "/assets/",
-			filename: "[name].js"
-		},
-		resolve: {
-			alias: {
-				shared: path.join(dirname, "src", "shared")
-			}
-		},
-		module: {
-			loaders: [{
-				test: /\.js$/,
-				use: "babel-loader",
-				exclude: /node_modules/
-			}, {
-				test: /\.(png|jpg|jpeg|gif|woff|ttf|eot|svg|woff2)/,
-				loader: "file-loader?name=[name].[ext]&outputPath=images/",
-				exclude: /node_modules/
-			}, {
-				test: /\.css$/,
-				use: cssLoader,
-				exclude: /node_modules/
-			}, {
-				test: /\.scss$/,
-				use: sassLoader,
-				exclude: /node_modules/
-			}]
-		}
-	};
-}
-
-module.exports = createClientConfig(true);
-module.exports.create = createClientConfig;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = require("body-parser");
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("chalk");
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("express-handlebars");
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = require("http");
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("mongoose");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("socket.io");
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("webpack-dev-middleware");
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = require("webpack-hot-middleware");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
@@ -249,7 +96,7 @@ var _path = __webpack_require__(1);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _mongoose = __webpack_require__(9);
+var _mongoose = __webpack_require__(4);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
@@ -257,23 +104,23 @@ var _bodyParser = __webpack_require__(5);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _expressHandlebars = __webpack_require__(7);
+var _expressHandlebars = __webpack_require__(6);
 
 var _expressHandlebars2 = _interopRequireDefault(_expressHandlebars);
 
-var _index = __webpack_require__(3);
+var _index = __webpack_require__(7);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _chalk = __webpack_require__(6);
+var _chalk = __webpack_require__(8);
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
-var _socket = __webpack_require__(10);
+var _socket = __webpack_require__(9);
 
 var _socket2 = _interopRequireDefault(_socket);
 
-var _http = __webpack_require__(8);
+var _http = __webpack_require__(10);
 
 var _http2 = _interopRequireDefault(_http);
 
@@ -286,7 +133,7 @@ if (process.env.USE_WEBPACK === "true") {
 	var webpackMiddleware = __webpack_require__(11),
 	    webpackHotMiddlware = __webpack_require__(12),
 	    webpack = __webpack_require__(2),
-	    clientConfig = __webpack_require__(4).create(true);
+	    clientConfig = __webpack_require__(13).create(true);
 
 	var compiler = webpack(clientConfig);
 	app.use(webpackMiddleware(compiler, {
@@ -326,34 +173,202 @@ app.listen(port, function () {
 });
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("mongoose");
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("body-parser");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("express-handlebars");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var express = __webpack_require__(0);
+var router = express.Router();
+
+router.get("/", function (req, res, next) {
+	res.render("index", { title: "Hasrat Sabit", message: "Welcome" });
+});
+
+router.get('/admin', function (req, res) {
+	res.render('admin/admin', { title: 'Add Product Here' });
+});
+
+module.exports = router;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("chalk");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("socket.io");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("webpack-dev-middleware");
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = require("webpack-hot-middleware");
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var path = __webpack_require__(1);
+var webpack = __webpack_require__(2);
+var ExtractTextPlugin = __webpack_require__(14);
+var OptimizeCssAssetsPlugin = __webpack_require__(15);
+var ImageminPlugin = __webpack_require__(16).default;
+var CopyWebpackPlugin = __webpack_require__(17);
+var dirname = path.resolve("./");
+var HtmlPlugin = __webpack_require__(18);
+
+function createClientConfig(isDev) {
+
+	var sassDev = ['style-loader', 'css-loader', 'sass-loader'];
+	var sassProd = ExtractTextPlugin.extract({
+		fallback: 'style-loader',
+		use: ['css-loader', 'sass-loader']
+	});
+
+	var cssDev = ['style-loader', 'css-loader', 'sass-loader'];
+	var cssProd = ExtractTextPlugin.extract({
+		fallback: 'style-loader',
+		use: ['css-loader']
+	});
+
+	var cssLoader = isDev ? cssDev : cssProd;
+	var sassLoader = isDev ? sassDev : sassProd;
+
+	var appEntry = ["./src/client/scripts/main.js"];
+	var plugins = isDev ? [new webpack.optimize.CommonsChunkPlugin("vendors"), new webpack.HotModuleReplacementPlugin(), new HtmlPlugin({
+		template: 'views/index.hbs'
+	})] : [new webpack.optimize.UglifyJsPlugin(), new ExtractTextPlugin({ filename: "styles.css" }), new OptimizeCssAssetsPlugin({
+		assetNameRegExp: /.css$/,
+		cssProcessor: __webpack_require__(19),
+		cssProcessorOptions: { discardComments: { removeAll: true } },
+		canPrint: true
+	})];
+	if (isDev) {
+		appEntry.splice(0, 0, "webpack-hot-middleware/client");
+	}
+
+	return {
+		devtool: "source-map",
+		plugins: plugins,
+		entry: {
+			bundle: appEntry,
+			vendors: ['jquery']
+		},
+		output: {
+			path: path.join(dirname, "public", "assets"),
+			publicPath: "/assets/",
+			filename: "[name].js"
+		},
+		resolve: {
+			alias: {
+				shared: path.join(dirname, "src", "shared")
+			}
+		},
+		node: {
+			dns: "mock",
+			fs: "empty",
+			path: true,
+			url: false
+		},
+		module: {
+			loaders: [{
+				test: /\.js$/,
+				use: "babel-loader",
+				exclude: /node_modules/
+			}, {
+				test: /\.(png|jpg|jpeg|gif|woff|ttf|eot|svg|woff2)/,
+				loader: "file-loader?name=[name].[ext]&outputPath=images/",
+				exclude: /node_modules/
+			}, {
+				test: /\.css$/,
+				use: cssLoader,
+				exclude: /node_modules/
+			}, {
+				test: /\.scss$/,
+				use: sassLoader,
+				exclude: /node_modules/
+			}]
+		}
+	};
+}
+
+module.exports = createClientConfig(true);
+module.exports.create = createClientConfig;
+
+/***/ }),
 /* 14 */
-/***/ (function(module, exports) {
-
-module.exports = require("copy-webpack-plugin");
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = require("cssnano");
-
-/***/ }),
-/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = require("extract-text-webpack-plugin");
 
 /***/ }),
-/* 17 */
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = require("optimize-css-assets-webpack-plugin");
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = require("imagemin-webpack-plugin");
 
 /***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = require("copy-webpack-plugin");
+
+/***/ }),
 /* 18 */
 /***/ (function(module, exports) {
 
-module.exports = require("optimize-css-assets-webpack-plugin");
+module.exports = require("html-webpack-plugin");
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("cssnano");
 
 /***/ })
 /******/ ]);

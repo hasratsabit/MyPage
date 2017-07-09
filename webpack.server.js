@@ -20,6 +20,7 @@ function createServerConfig(isDev) {
 			path: path.join(__dirname, "server"),
 			filename: "server.js"
 		},
+
 		module: {
 			loaders: [
 				{
