@@ -1,5 +1,10 @@
 .navbar {
+	position: relative;
+	top: 210px;
 	height: 100%;
+	@include atSmall {
+		top: 150px;
+	}
 	.admin {
 		border-bottom: 1px solid $lightGray;
 	}

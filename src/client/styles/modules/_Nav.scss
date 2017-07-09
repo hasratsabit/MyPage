@@ -4,7 +4,7 @@
 		position: fixed;
 		top: 0;
 		right: 0;
-		z-index: 10;
+		z-index: 20;
 		height: 60px;
 		width: 100%;
 		background: $lightBlue;
@@ -27,19 +27,20 @@
 
 	&__side-nav {
 		position: fixed;
-		top: 60px;
+		top: 0;
 		left: 0;
 		margin-left: -70%;
 		height: 100%;
 		width: 70%;
 		background: #FFF;
 		z-index: 11;
-		overflow-y: scroll;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 		transition: all 200ms linear;
+		&:hover {
+			overflow-y: scroll;
+		}
 		@include atSmall {
 			margin-left: 0;
-			top: 0;
 			width: 20%;
 		}
 		@include atLarge {
@@ -59,18 +60,40 @@
 	}
 
 	&__user-box {
-		position: relative;
-		top: 0;
+		position: absolute;
+		top: 60px;
+		float: left;
+		z-index: 15;
 		height: 150px;
-		width: 100%;
+		width: 70%;
+		margin-left: -70%;
 		text-align: center;
 		background-image: url('/assets/images/user-bg.jpg');
 		background-size: cover;
+		transition: all 200ms linear;
+		@include atSmall {
+			top: 0;
+			width: 20%;
+			margin-left: 0;
+		}
+		@include atLarge {
+			width: 15%;
+		}
 
+		// JS class to close UserBox
+		&--is-closed {
+			margin-left: 0;
+			transition: all 200ms linear;
+			@include atSmall {
+				margin-left: -20%;
+			}
+			@include atLarge {
+				margin-left: -15%;
+			}
+		}
 	}
 
 	&__user-info {
-		position: absolute;
 		height: 100%;
 		width: 100%;
 		background: rgba(black, 0.3);

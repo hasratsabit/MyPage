@@ -7,6 +7,7 @@ const PageMenuIcon = (function() {
 		const TopNav = '.nav__top-nav';
 		const SmallNav = '.nav__sm-nav';
 		const MainContent = '.main';
+		const UserBox = '.nav__user-box'
 
 
 		$(PageIcon).on('click', function() {
@@ -19,8 +20,10 @@ const PageMenuIcon = (function() {
 			$(MainContent).toggleClass('main--is-expanded');
 			// 4. Open Small Nav When SideNav is Closed
 			$(SmallNav).toggleClass('nav__sm-nav--is-open');
-			// 5. Toggle Menu Icon in Smaller Device
-			$(PageIcon).toggleClass('menu-icon--close-x ')
+			//5. Clsoe User Info Box
+			$(UserBox).toggleClass('nav__user-box--is-closed');
+			// 6. Toggle Menu Icon in Smaller Device
+			$(PageIcon).toggleClass('menu-icon--close-x ');
 		});
 
 }());
