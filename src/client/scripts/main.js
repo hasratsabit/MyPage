@@ -4,3 +4,4 @@ import "../styles/styles.scss";
 import "./modules/page/Nav";
 
 import "./modules/Dropdown";
+import "./modules/InitializeComponents";

@@ -1,13 +1,18 @@
-const express = require("express");
+import express from "express";
+import blogRoute from "./blog";
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
 	res.render("index", { title: "Hasrat Sabit", message: "Welcome"})
 });
 
-router.get('/admin', (req, res) => {
-	res.render('admin/admin', { title: 'Add Product Here'})
-})
+router.get('/blog', (req, res) => {
+	res.render('blog/blog', {title: 'ALL BLOGS'})
+});
+
+router.get('/add-blog', (req, res) => {
+	res.render('blog/add-blog', {title: 'ADD BLOG'})
+});
 
 
 module.exports = router;
