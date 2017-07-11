@@ -6,13 +6,6 @@ router.get("/", (req, res, next) => {
 	res.render("index", { title: "Hasrat Sabit", message: "Welcome"})
 });
 
-router.get('/blog', (req, res) => {
-	res.render('blog/blog', {title: 'ALL BLOGS'})
-});
 
-router.get('/add-blog', (req, res) => {
-	res.render('blog/add-blog', {title: 'ADD BLOG'})
-});
-
-
+router.use('/blog', blogRoute);
 module.exports = router;

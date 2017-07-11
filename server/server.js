@@ -213,14 +213,7 @@ router.get("/", function (req, res, next) {
 	res.render("index", { title: "Hasrat Sabit", message: "Welcome" });
 });
 
-router.get('/blog', function (req, res) {
-	res.render('blog/blog', { title: 'ALL BLOGS' });
-});
-
-router.get('/add-blog', function (req, res) {
-	res.render('blog/add-blog', { title: 'ADD BLOG' });
-});
-
+router.use('/blog', _blog2.default);
 module.exports = router;
 
 /***/ }),
@@ -237,6 +230,14 @@ var _express2 = _interopRequireDefault(_express);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
+
+router.get('/', function (req, res) {
+	res.render('blog/blog', { title: 'ALL BLOGS' });
+});
+
+router.get('/add-blog', function (req, res) {
+	res.render('blog/add-blog', { title: 'ADD BLOG' });
+});
 
 module.exports = router;
 
