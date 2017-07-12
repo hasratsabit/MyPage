@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,10 +79,16 @@ module.exports = require("path");
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("webpack");
+module.exports = require("mongoose");
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("webpack");
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96,7 +102,7 @@ var _path = __webpack_require__(1);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _mongoose = __webpack_require__(4);
+var _mongoose = __webpack_require__(2);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
@@ -112,28 +118,38 @@ var _index = __webpack_require__(7);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _chalk = __webpack_require__(9);
+var _chalk = __webpack_require__(10);
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
-var _socket = __webpack_require__(10);
+var _socket = __webpack_require__(11);
 
 var _socket2 = _interopRequireDefault(_socket);
 
-var _http = __webpack_require__(11);
+var _http = __webpack_require__(12);
 
 var _http2 = _interopRequireDefault(_http);
+
+var _database = __webpack_require__(13);
+
+var _database2 = _interopRequireDefault(_database);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
 
+_mongoose2.default.connect(_database2.default.database);
+var db = _mongoose2.default.connection;
+db.once('open', function () {
+	console.log('Connected to mongoose');
+});
+
 // Client Webpack
 if (process.env.USE_WEBPACK === "true") {
-	var webpackMiddleware = __webpack_require__(12),
-	    webpackHotMiddlware = __webpack_require__(13),
-	    webpack = __webpack_require__(2),
-	    clientConfig = __webpack_require__(14).create(true);
+	var webpackMiddleware = __webpack_require__(14),
+	    webpackHotMiddlware = __webpack_require__(15),
+	    webpack = __webpack_require__(3),
+	    clientConfig = __webpack_require__(16).create(true);
 
 	var compiler = webpack(clientConfig);
 	app.use(webpackMiddleware(compiler, {
@@ -171,12 +187,6 @@ var port = process.env.port || 3000;
 app.listen(port, function () {
 	console.log("Running on port " + port);
 });
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("mongoose");
 
 /***/ }),
 /* 5 */
@@ -227,65 +237,142 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
+var _blog = __webpack_require__(9);
+
+var _blog2 = _interopRequireDefault(_blog);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
 
 router.get('/', function (req, res) {
-	res.render('blog/blog', { title: 'ALL BLOGS' });
+	_blog2.default.find(function (err, blogs) {
+		if (err) {
+			console.log(err);
+			return;
+		} else {
+			res.render('blog/blog', {
+				title: 'Blogs',
+				blog: blogs
+			});
+		}
+	});
 });
 
-router.get('/add-blog', function (req, res) {
+router.post('/post-blog', function (req, res) {
+	var blog = new _blog2.default();
+	blog.title = req.body.title;
+	blog.image = req.body.image;
+	blog.content = req.body.content;
+
+	blog.save(function (err) {
+		if (err) {
+			console.log(err);
+			return;
+		} else {
+			res.redirect('/');
+		}
+	});
+});
+
+router.get('/post-blog', function (req, res) {
 	res.render('blog/add-blog', { title: 'ADD BLOG' });
+});
+
+router.get('/view-all-blogs', function (req, res) {
+	res.render('blog/view-all-blogs', { title: 'View all blogs' });
 });
 
 module.exports = router;
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("chalk");
+"use strict";
+
+
+var _mongoose = __webpack_require__(2);
+
+var _mongoose2 = _interopRequireDefault(_mongoose);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Schema = _mongoose2.default.Schema;
+
+var BlogSchema = new Schema({
+	title: String,
+	author: String,
+	postDate: Date,
+	content: String,
+	category: String,
+	comment: String,
+	commentNum: Number,
+	shared: Number,
+	liked: String,
+	image: String
+});
+
+var Blog = _mongoose2.default.model('Blog', BlogSchema);
+module.exports = Blog;
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("socket.io");
+module.exports = require("chalk");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("http");
+module.exports = require("socket.io");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("webpack-dev-middleware");
+module.exports = require("http");
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+	database: 'mongodb://localhost:27017/myPage',
+	secret: 'yoursecret'
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = require("webpack-dev-middleware");
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack-hot-middleware");
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var path = __webpack_require__(1);
-var webpack = __webpack_require__(2);
-var ExtractTextPlugin = __webpack_require__(15);
-var OptimizeCssAssetsPlugin = __webpack_require__(16);
-var ImageminPlugin = __webpack_require__(17).default;
-var CopyWebpackPlugin = __webpack_require__(18);
+var webpack = __webpack_require__(3);
+var ExtractTextPlugin = __webpack_require__(17);
+var OptimizeCssAssetsPlugin = __webpack_require__(18);
+var ImageminPlugin = __webpack_require__(19).default;
+var CopyWebpackPlugin = __webpack_require__(20);
 var dirname = path.resolve("./");
-var HtmlPlugin = __webpack_require__(19);
+var HtmlPlugin = __webpack_require__(21);
 
 function createClientConfig(isDev) {
 
@@ -309,7 +396,7 @@ function createClientConfig(isDev) {
 		template: 'views/index.hbs'
 	})] : [new webpack.optimize.UglifyJsPlugin(), new ExtractTextPlugin({ filename: "styles.css" }), new OptimizeCssAssetsPlugin({
 		assetNameRegExp: /.css$/,
-		cssProcessor: __webpack_require__(20),
+		cssProcessor: __webpack_require__(22),
 		cssProcessorOptions: { discardComments: { removeAll: true } },
 		canPrint: true
 	})];
@@ -366,37 +453,37 @@ module.exports = createClientConfig(true);
 module.exports.create = createClientConfig;
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("extract-text-webpack-plugin");
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("optimize-css-assets-webpack-plugin");
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = require("imagemin-webpack-plugin");
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("copy-webpack-plugin");
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("html-webpack-plugin");
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("cssnano");

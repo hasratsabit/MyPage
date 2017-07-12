@@ -8,9 +8,15 @@ import chalk from "chalk";
 import socketIo from "socket.io";
 import http from "http";
 import expressHbs from "express-handlebars";
+import config from "./config/database";
 
 const app = express();
 
+mongoose.connect(config.database);
+const db = mongoose.connection;
+db.once('open', () => {
+	console.log('Connected to mongoose');
+})
 
 // Client Webpack
 if (process.env.USE_WEBPACK === "true") {

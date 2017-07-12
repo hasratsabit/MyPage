@@ -1,53 +1,47 @@
 <div class="add-blog">
 	<div class="row">
-		<div class="col s12 m8">
-			<div class="add-blog__add-form">
-				<h1 class="title">Add Blog</h1>
-				<form class="" action="" method="post">
+		<form class="" action="/blog/post-blog" method="post">
+			<div class="col s12 m8">
+				<div class="add-blog__add-form">
 					<div class="input-field">
-	          <input id="blog-title" type="text" name="blog-title">
-	          <label for="blog-title">Title</label>
-	        </div>
+						<input id="blog-title" type="text" name="title">
+						<label for="blog-title">Title</label>
+					</div>
 					<div class="chips chips-placeholder"></div>
 					<div class="input-field">
-						<select>
+						<select name="status">
 							<option value=""  disabled selected>Choose your status</option>
 							<option value="draft">Draft</option>
 							<option value="publish">Publish</option>
 						</select>
 						<label>Status</label>
 					</div>
-					<div class="file-field input-field">
-						<div class="btn">
-							<span>File</span>
-							<input type="file" multiple>
-						</div>
-						<div class="file-path-wrapper">
-							<input class="file-path validate" type="text" placeholder="Upload one or more files">
-						</div>
-						<div class="input-field">
-							<textarea id="textarea1" class="materialize-textarea" data-length="1000"></textarea>
-							<label for="textarea1">Textarea</label>
-						</div>
-						<div class="input-field">
-							<button class="btn waves-effect waves-light btn-large" type="submit" name="action">Post Blog
-	    					<i class="material-icons right">send</i>
-	  					</button>
-						</div>
+					<div class="input-field">
+						<input id="image" type="text" name="image">
+						<label for="image">Image</label>
 					</div>
-				</form>
+					<div class="input-field">
+						<textarea id="textarea1" class="materialize-textarea" data-length="1000" name="content"></textarea>
+						<label for="textarea1">Textarea</label>
+					</div>
+					<div class="input-field">
+						<button class="btn waves-effect waves-light btn-large" type="submit" name="action">Post Blog
+							<i class="material-icons right">send</i>
+						</button>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="col s12 m4">
-			<div class="add-blog__widget">
-				<p>Some content</p>
+			<div class="col s12 m4">
+				<div class="add-blog__widget">
+					<p>Some content</p>
+				</div>
+				<div class="add-blog__widget">
+					<p>Some content</p>
+				</div>
+				<div class="add-blog__widget">
+					<p>Some content</p>
+				</div>
 			</div>
-			<div class="add-blog__widget">
-				<p>Some content</p>
-			</div>
-			<div class="add-blog__widget">
-				<p>Some content</p>
-			</div>
-		</div>
+		</form>
 	</div>
 </div>

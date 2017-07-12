@@ -1,0 +1,33 @@
+
+.table {
+	font-size: 0.8rem;
+}
+
+.table-border {
+	tr {
+		border: 1px solid $lightGray;
+		padding-left: 10px;
+	}
+	td {
+		border: 1px solid $lightGray;
+	}
+	th {
+		border: 1px solid $lightGray;
+		background: whitesmoke;
+	}
+}
+
+.table-hover {
+	tr {
+		transition: all 300ms linear;
+		&:hover {
+			background: whitesmoke;
+			transition: all 300ms linear;
+		}
+	}
+
+}
+.table-white {
+	background-color: #FFF;
+	box-shadow: $shadow;
+}
