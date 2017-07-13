@@ -1,5 +1,6 @@
 import express from "express";
 import Blog from "../models/blog";
+import multer from "multer";
 const router = express.Router();
 
 
@@ -16,6 +17,7 @@ router.get('/', (req, res) => {
 		}
 	})
 });
+
 
 router.post('/post-blog', (req, res) => {
 	const blog = new Blog();

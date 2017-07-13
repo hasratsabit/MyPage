@@ -118,19 +118,19 @@ var _index = __webpack_require__(7);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _chalk = __webpack_require__(10);
+var _chalk = __webpack_require__(11);
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
-var _socket = __webpack_require__(11);
+var _socket = __webpack_require__(12);
 
 var _socket2 = _interopRequireDefault(_socket);
 
-var _http = __webpack_require__(12);
+var _http = __webpack_require__(13);
 
 var _http2 = _interopRequireDefault(_http);
 
-var _database = __webpack_require__(13);
+var _database = __webpack_require__(14);
 
 var _database2 = _interopRequireDefault(_database);
 
@@ -146,10 +146,10 @@ db.once('open', function () {
 
 // Client Webpack
 if (process.env.USE_WEBPACK === "true") {
-	var webpackMiddleware = __webpack_require__(14),
-	    webpackHotMiddlware = __webpack_require__(15),
+	var webpackMiddleware = __webpack_require__(15),
+	    webpackHotMiddlware = __webpack_require__(16),
 	    webpack = __webpack_require__(3),
-	    clientConfig = __webpack_require__(16).create(true);
+	    clientConfig = __webpack_require__(17).create(true);
 
 	var compiler = webpack(clientConfig);
 	app.use(webpackMiddleware(compiler, {
@@ -241,6 +241,10 @@ var _blog = __webpack_require__(9);
 
 var _blog2 = _interopRequireDefault(_blog);
 
+var _multer = __webpack_require__(10);
+
+var _multer2 = _interopRequireDefault(_multer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
@@ -254,6 +258,30 @@ router.get('/', function (req, res) {
 			res.render('blog/blog', {
 				title: 'Blogs',
 				blog: blogs
+			});
+		}
+	});
+});
+
+var storage = _multer2.default.diskStorage({
+	destination: function destination(req, file, cb) {
+		cb(null, 'uploads/');
+	},
+	filename: function filename(req, file, cb) {
+		cb(null, file.fieldname + '-' + Date.now() + '.jpg');
+	}
+});
+
+var upload = (0, _multer2.default)({ storage: storage }).single('image');
+
+router.post('/image', function (req, res) {
+	upload(req, res, function (err) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.json({
+				success: true,
+				message: 'successfully uploaded'
 			});
 		}
 	});
@@ -320,22 +348,28 @@ module.exports = Blog;
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("chalk");
+module.exports = require("multer");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("socket.io");
+module.exports = require("chalk");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("http");
+module.exports = require("socket.io");
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -347,19 +381,19 @@ module.exports = {
 };
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack-dev-middleware");
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack-hot-middleware");
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -367,12 +401,12 @@ module.exports = require("webpack-hot-middleware");
 
 var path = __webpack_require__(1);
 var webpack = __webpack_require__(3);
-var ExtractTextPlugin = __webpack_require__(17);
-var OptimizeCssAssetsPlugin = __webpack_require__(18);
-var ImageminPlugin = __webpack_require__(19).default;
-var CopyWebpackPlugin = __webpack_require__(20);
+var ExtractTextPlugin = __webpack_require__(18);
+var OptimizeCssAssetsPlugin = __webpack_require__(19);
+var ImageminPlugin = __webpack_require__(20).default;
+var CopyWebpackPlugin = __webpack_require__(21);
 var dirname = path.resolve("./");
-var HtmlPlugin = __webpack_require__(21);
+var HtmlPlugin = __webpack_require__(22);
 
 function createClientConfig(isDev) {
 
@@ -396,7 +430,7 @@ function createClientConfig(isDev) {
 		template: 'views/index.hbs'
 	})] : [new webpack.optimize.UglifyJsPlugin(), new ExtractTextPlugin({ filename: "styles.css" }), new OptimizeCssAssetsPlugin({
 		assetNameRegExp: /.css$/,
-		cssProcessor: __webpack_require__(22),
+		cssProcessor: __webpack_require__(23),
 		cssProcessorOptions: { discardComments: { removeAll: true } },
 		canPrint: true
 	})];
@@ -453,37 +487,37 @@ module.exports = createClientConfig(true);
 module.exports.create = createClientConfig;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("extract-text-webpack-plugin");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = require("optimize-css-assets-webpack-plugin");
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("imagemin-webpack-plugin");
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("copy-webpack-plugin");
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("html-webpack-plugin");
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("cssnano");
